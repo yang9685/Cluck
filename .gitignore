@@ -1,0 +1,28 @@
+.dotnet/
+.idea/
+.vs/
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+
+# Visual Studio build outputs
+*.VC.db
+*.VC.opendb
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.ipch
+*.pdb
+*.idb
+*.ilk
+*.obj
+*.log
+*.tlog
+*.lastbuildstate
+
+# Project build folders
+x64/
+ChickenSiege/x64/
