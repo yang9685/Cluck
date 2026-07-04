@@ -1,48 +1,58 @@
-#include<iostream>
-#include<SDL3/SDL.h>
-#include<SDL3/SDL_rect.h>
+#include <iostream>
+#include <__msvc_ostream.hpp>
+#include <SDL3/SDL.h>
 
-void Draw_Circle(SDL_Renderer* renderer,int x,int y,int radius);
-
+#include "System/GameActivityBase.h"
+#include "System/TimerManager.h"
 
 int main(int argc, char* argv[])
 {
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* window = SDL_CreateWindow("Cluck", 1920, 1080, SDL_WINDOW_RESIZABLE);
-    SDL_Renderer* Renderer = SDL_CreateRenderer(window,nullptr);
-    SDL_Surface* BackGroundSurface = SDL_LoadPNG("Resource/Image/background.png");
-    SDL_Texture* BackGroundSurfaceTexture = SDL_CreateTextureFromSurface(Renderer, BackGroundSurface);
-    SDL_DestroySurface(BackGroundSurface);
 
-    auto start = SDL_GetTicks();
+    SDL_Window* Window = SDL_CreateWindow("Cluck", 1920, 1080, SDL_WINDOW_RESIZABLE);
+    SDL_Renderer* Renderer = SDL_CreateRenderer(Window, nullptr);
+
+    TimerManager& TimeManager = TimerManager::GetInstance();
+    GameActivityBase GameActivity;
+    GameActivity.InitializeRenderManager(Renderer);
+    GameActivity.WorldBeginPlay();
+
+    const float MainLoopIntervalSeconds = GameActivity.GetMainLoopIntervalSeconds();
+    const TimerHandle MainLoopTimerHandle = TimeManager.CreateTimer(
+        MainLoopIntervalSeconds,
+        true,
+        [&GameActivity, MainLoopIntervalSeconds]()
+        {
+            GameActivity.GameLoop(MainLoopIntervalSeconds);
+        });
+
     bool bIsRunning = true;
+    
     while (bIsRunning)
     {
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
+        SDL_Event Event;
+
+        while (SDL_PollEvent(&Event))
         {
-            if (event.type == SDL_EVENT_KEY_DOWN)
+            if (Event.type == SDL_EVENT_QUIT)
             {
-                if (event.key.key == SDLK_ESCAPE)
-                {
-                    bIsRunning = false;
-                }
+                bIsRunning = false;
+            }
+            else if (Event.type == SDL_EVENT_KEY_DOWN && Event.key.key == SDLK_ESCAPE)
+            {
+                bIsRunning = false;
             }
         }
-        
-        int width, height;
-        SDL_GetWindowSize(window,&width,&height);
-        SDL_RenderClear(Renderer);
-        SDL_FRect backgroundDst = {0, 0, (float)width, (float)height};\
-        SDL_RenderTexture(Renderer, BackGroundSurfaceTexture, nullptr, &backgroundDst);
-        SDL_RenderPresent(Renderer);
+
+        TimeManager.Update();
     }
-    auto end = SDL_GetTicks();
-    std::cout << end - start;
-    SDL_DestroyTexture(BackGroundSurfaceTexture);
+
+    std::cout << "hello world" << std::endl;
+    TimeManager.DestroyTimer(MainLoopTimerHandle);
+    GameActivity.WorldEndPlay();
+
     SDL_DestroyRenderer(Renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyWindow(Window);
     SDL_Quit();
     return 0;
 }
-

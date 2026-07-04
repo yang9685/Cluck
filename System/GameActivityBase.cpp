@@ -8,9 +8,22 @@ GameActivityBase::~GameActivityBase()
     WorldEndPlay();
 }
 
-GameStatus GameActivityBase::GameLoop()
+GameStatus GameActivityBase::GameLoop(float DeltaTime)
 {
-    return Update();
+    if (!bWorldBegunPlay)
+    {
+        return CurrentGameStatus;
+    }
+    SortActors();
+    UpdateSingletons();
+    TickActors(DeltaTime);
+    ProcessPendingDestroyActors();
+    return CurrentGameStatus;
+}
+
+void GameActivityBase::InitializeRenderManager(SDL_Renderer* Renderer)
+{
+    RenderManagerInstance.get().Initialize(Renderer);
 }
 
 Actor& GameActivityBase::AddActor(std::unique_ptr<Actor> NewActor)
@@ -37,8 +50,9 @@ void GameActivityBase::InitializeSingletons()
 
 void GameActivityBase::UpdateSingletons()
 {
-    TimeManager.get().Update();
+    RenderManagerInstance.get().Update(Actors);
 }
+
 
 void GameActivityBase::TickActors(float DeltaTime)
 {
@@ -51,6 +65,17 @@ void GameActivityBase::TickActors(float DeltaTime)
     }
 }
 
+void GameActivityBase::SortActors()
+{
+    if (Actors.size() > 0)
+    {
+        std::sort(Actors.begin(), Actors.end(), [](const std::unique_ptr<Actor>& A, const std::unique_ptr<Actor>& B)
+        {
+            return A->RenderPriority < B->RenderPriority;
+        }); 
+    }
+}
+
 void GameActivityBase::WorldBeginPlay()
 {
     if (bWorldBegunPlay)
@@ -59,17 +84,6 @@ void GameActivityBase::WorldBeginPlay()
     }
 
     InitializeSingletons();
-
-    if (MainLoopTimerHandle == InvalidTimerHandle)
-    {
-        MainLoopTimerHandle = TimeManager.get().CreateTimer(
-            MainLoopIntervalSeconds,
-            true,
-            [this]()
-            {
-                TickActors(MainLoopIntervalSeconds);
-            });
-    }
 
     for (const std::unique_ptr<Actor>& ActorInstance : Actors)
     {
@@ -84,20 +98,7 @@ void GameActivityBase::WorldBeginPlay()
 
 void GameActivityBase::WorldEndPlay()
 {
-    if (MainLoopTimerHandle != InvalidTimerHandle)
-    {
-        TimeManager.get().DestroyTimer(MainLoopTimerHandle);
-        MainLoopTimerHandle = InvalidTimerHandle;
-    }
-
     bWorldBegunPlay = false;
-}
-
-GameStatus GameActivityBase::Update()
-{
-    UpdateSingletons();
-    ProcessPendingDestroyActors();
-    return CurrentGameStatus;
 }
 
 size_t GameActivityBase::GetActorCount() const
@@ -137,11 +138,6 @@ void GameActivityBase::ClearActors()
     PendingDestroyActors.clear();
 }
 
-TimerManager& GameActivityBase::GetTimeManager() const
-{
-    return TimeManager.get();
-}
-
 float GameActivityBase::GetMainLoopIntervalSeconds() const
 {
     return MainLoopIntervalSeconds;
@@ -152,24 +148,9 @@ void GameActivityBase::SetMainLoopIntervalSeconds(float IntervalSeconds)
     MainLoopIntervalSeconds = IntervalSeconds;
 }
 
-TimerHandle GameActivityBase::GetMainLoopTimerHandle() const
-{
-    return MainLoopTimerHandle;
-}
-
-void GameActivityBase::SetMainLoopTimerHandle(TimerHandle Handle)
-{
-    MainLoopTimerHandle = Handle;
-}
-
 GameStatus GameActivityBase::GetCurrentGameStatus() const
 {
     return CurrentGameStatus;
-}
-
-void GameActivityBase::SetCurrentGameStatus(GameStatus NewStatus)
-{
-    CurrentGameStatus = NewStatus;
 }
 
 bool GameActivityBase::HasWorldBegunPlay() const

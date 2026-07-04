@@ -1,6 +1,9 @@
 #pragma once
+
 #include <memory>
+
 #include "../Base/Atlas.h"
+#include "Component.h"
 
 struct AnimationPlaybackState
 {
@@ -10,7 +13,7 @@ struct AnimationPlaybackState
     float PlayRate = 1.0f;
 };
 
-class AnimationComponent
+class AnimationComponent : public Component
 {
 public:
     AnimationComponent() = default;

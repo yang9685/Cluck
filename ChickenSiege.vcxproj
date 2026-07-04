@@ -236,9 +236,11 @@
       <AdditionalIncludeDirectories>H:\OtherProject\ChickenSiege\Cluck\\SDL3-3.4.10\include;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="System\Actor.cpp" />
     <ClCompile Include="System\GameActivityBase.cpp" />
+    <ClCompile Include="System\RenderManager.cpp" />
     <ClCompile Include="System\Timer.cpp" />
     <ClCompile Include="System\TimerManager.cpp" />
   </ItemGroup>
@@ -247,9 +249,11 @@
     <ClInclude Include="Base\Types.h" />
     <ClInclude Include="Base\Vector2D.h" />
     <ClInclude Include="Component\AnimationComponent.h" />
+    <ClInclude Include="Component\Component.h" />
     <ClInclude Include="Resource\ResourcePaths.h" />
     <ClInclude Include="System\Actor.h" />
     <ClInclude Include="System\GameActivityBase.h" />
+    <ClInclude Include="System\RenderManager.h" />
     <ClInclude Include="System\Timer.h" />
     <ClInclude Include="System\TimerManager.h" />
   </ItemGroup>

@@ -9,7 +9,9 @@ struct SDLTextureDeleter
 };
 
 using TexturePtr = std::unique_ptr<SDL_Texture, SDLTextureDeleter>;
+
 //图集类存储图集
+
 class Atlas
 {
 public:
