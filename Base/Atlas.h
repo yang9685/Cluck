@@ -10,8 +10,6 @@ struct SDLTextureDeleter
 
 using TexturePtr = std::unique_ptr<SDL_Texture, SDLTextureDeleter>;
 
-//图集类存储图集
-
 class Atlas
 {
 public:
@@ -23,7 +21,7 @@ public:
     void Reset();
 
     bool AdvanceFrame(bool bLoop);
-    bool RenderCurrentFrame(SDL_Renderer& Renderer, const SDL_FRect& DestRect) const;
+    SDL_Texture* GetCurrentFrameTexture() const;
     bool IsFinished() const;
     bool IsValid() const;
 

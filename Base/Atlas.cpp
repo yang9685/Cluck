@@ -63,21 +63,20 @@ bool Atlas::AdvanceFrame(bool bLoop)
     return false;
 }
 
-bool Atlas::RenderCurrentFrame(SDL_Renderer& Renderer, const SDL_FRect& DestRect) const
+SDL_Texture* Atlas::GetCurrentFrameTexture() const
 {
     if (Frames.empty())
     {
-        return false;
+        return nullptr;
     }
 
     const TexturePtr& CurrentFrame = Frames[CurrentFrameIndex];
     if (!CurrentFrame)
     {
-        return false;
+        return nullptr;
     }
 
-    SDL_RenderTexture(&Renderer, CurrentFrame.get(), nullptr, &DestRect);
-    return true;
+    return CurrentFrame.get();
 }
 
 bool Atlas::IsFinished() const

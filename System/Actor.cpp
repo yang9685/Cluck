@@ -2,15 +2,23 @@
 
 #include <stdexcept>
 
-Actor::Actor(const Vector2D position, const float rotation,const int RenderPriority)
+Actor::Actor(const Vector2D& InPosition, float InRotation, int InRenderPriority, const Vector2D& InBaseRenderSize, float InScale)
 {
-    this->Position = position;
-    this->Rotation = rotation;
-    this->RenderPriority = RenderPriority;
+    Position = InPosition;
+    Rotation = InRotation;
+    RenderPriority = InRenderPriority;
+    BaseRenderSize = InBaseRenderSize;
+    Scale = InScale;
+    UpdateRenderRect();
 }
 
 void Actor::BeginPlay()
 {
+    if (bHasBegunPlay)
+    {
+        return;
+    }
+    
     for (const std::unique_ptr<Component>& ComponentInstance : Components)
     {
         if (ComponentInstance)
@@ -27,8 +35,9 @@ void Actor::Tick(float DeltaTime)
     (void)DeltaTime;
 }
 
-void Actor::Render(SDL_Renderer* renderer)
+void Actor::Render(SDL_Renderer* Renderer)
 {
+    (void)Renderer;
 }
 
 Component& Actor::AddComponent(std::unique_ptr<Component> NewComponent)
@@ -52,6 +61,7 @@ Component& Actor::AddComponent(std::unique_ptr<Component> NewComponent)
 void Actor::SetPosition(const Vector2D& InPosition)
 {
     Position = InPosition;
+    UpdateRenderRect();
 }
 
 const Vector2D& Actor::GetPosition() const
@@ -77,4 +87,44 @@ bool Actor::HasBegunPlay() const
 const std::vector<std::unique_ptr<Component>>& Actor::GetComponents() const
 {
     return Components;
+}
+
+const SDL_FRect& Actor::GetRenderRect() const
+{
+    return RenderRect;
+}
+
+void Actor::SetBaseRenderSize(const Vector2D& InBaseRenderSize)
+{
+    BaseRenderSize = InBaseRenderSize;
+    UpdateRenderRect();
+}
+
+const Vector2D& Actor::GetBaseRenderSize() const
+{
+    return BaseRenderSize;
+}
+
+void Actor::SetScale(float InScale)
+{
+    Scale = InScale;
+    UpdateRenderRect();
+}
+
+float Actor::GetScale() const
+{
+    return Scale;
+}
+
+int Actor::GetRenderPriority() const
+{
+    return RenderPriority;
+}
+
+void Actor::UpdateRenderRect()
+{
+    RenderRect.x = Position.x;
+    RenderRect.y = Position.y;
+    RenderRect.w = BaseRenderSize.x * Scale;
+    RenderRect.h = BaseRenderSize.y * Scale;
 }

@@ -3,6 +3,11 @@
 #include <algorithm>
 #include <stdexcept>
 
+#include "../Base/Types.h"
+#include "../GamePlay/Enemy/MediumChickenEnemy.h"
+
+#include "../GamePlay/BackgroundActor.h"
+
 GameActivityBase::~GameActivityBase()
 {
     WorldEndPlay();
@@ -14,10 +19,10 @@ GameStatus GameActivityBase::GameLoop(float DeltaTime)
     {
         return CurrentGameStatus;
     }
-    SortActors();
-    UpdateSingletons();
     TickActors(DeltaTime);
     ProcessPendingDestroyActors();
+    SortActors();
+    UpdateSingletons();
     return CurrentGameStatus;
 }
 
@@ -36,16 +41,14 @@ Actor& GameActivityBase::AddActor(std::unique_ptr<Actor> NewActor)
     Actor& ActorRef = *NewActor;
     Actors.push_back(std::move(NewActor));
 
-    if (bWorldBegunPlay)
-    {
-        ActorRef.BeginPlay();
-    }
+    ActorRef.BeginPlay();
 
     return ActorRef;
 }
 
 void GameActivityBase::InitializeSingletons()
 {
+    EnemySpawnerInstance.get().Initialize(*this);
 }
 
 void GameActivityBase::UpdateSingletons()
@@ -71,7 +74,7 @@ void GameActivityBase::SortActors()
     {
         std::sort(Actors.begin(), Actors.end(), [](const std::unique_ptr<Actor>& A, const std::unique_ptr<Actor>& B)
         {
-            return A->RenderPriority < B->RenderPriority;
+            return A->GetRenderPriority() < B->GetRenderPriority();
         }); 
     }
 }
@@ -84,7 +87,6 @@ void GameActivityBase::WorldBeginPlay()
     }
 
     InitializeSingletons();
-
     for (const std::unique_ptr<Actor>& ActorInstance : Actors)
     {
         if (ActorInstance)
@@ -92,12 +94,13 @@ void GameActivityBase::WorldBeginPlay()
             ActorInstance->BeginPlay();
         }
     }
-
+    this->CreateActor<BackgroundActor>();
     bWorldBegunPlay = true;
 }
 
 void GameActivityBase::WorldEndPlay()
 {
+    EnemySpawnerInstance.get().Shutdown();
     bWorldBegunPlay = false;
 }
 

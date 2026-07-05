@@ -2,6 +2,7 @@
 #include <__msvc_ostream.hpp>
 #include <SDL3/SDL.h>
 
+#include "Base/Types.h"
 #include "System/GameActivityBase.h"
 #include "System/TimerManager.h"
 
@@ -9,7 +10,7 @@ int main(int argc, char* argv[])
 {
     SDL_Init(SDL_INIT_VIDEO);
 
-    SDL_Window* Window = SDL_CreateWindow("Cluck", 1920, 1080, SDL_WINDOW_RESIZABLE);
+    SDL_Window* Window = SDL_CreateWindow("Cluck", CLUCK_WINDOW_WIDTH, CLUCK_WINDOW_HEIGHT, 0);
     SDL_Renderer* Renderer = SDL_CreateRenderer(Window, nullptr);
 
     TimerManager& TimeManager = TimerManager::GetInstance();
@@ -46,8 +47,7 @@ int main(int argc, char* argv[])
 
         TimeManager.Update();
     }
-
-    std::cout << "hello world" << std::endl;
+    
     TimeManager.DestroyTimer(MainLoopTimerHandle);
     GameActivity.WorldEndPlay();
 

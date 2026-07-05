@@ -24,6 +24,7 @@ public:
 
     void Initialize(SDL_Renderer* Renderer);
     void Update(const std::vector<std::unique_ptr<Actor>>& Actors);
+    SDL_Renderer* GetRenderer() const;
 
 private:
     SDL_Renderer* Renderer = nullptr;

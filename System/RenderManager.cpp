@@ -24,3 +24,7 @@ void RenderManager::Update(const std::vector<std::unique_ptr<Actor>>& Actors)
 
 }
 
+SDL_Renderer* RenderManager::GetRenderer() const
+{
+    return Renderer;
+}

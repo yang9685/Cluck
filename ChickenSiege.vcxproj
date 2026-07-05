@@ -237,8 +237,15 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Component\Component.cpp" />
+    <ClCompile Include="GamePlay\BackgroundActor.cpp" />
+    <ClCompile Include="GamePlay\CharacterActor.cpp" />
+    <ClCompile Include="GamePlay\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="GamePlay\Enemy\FastChickenEnemy.cpp" />
+    <ClCompile Include="GamePlay\Enemy\MediumChickenEnemy.cpp" />
+    <ClCompile Include="GamePlay\Enemy\SlowChickenEnemy.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="System\Actor.cpp" />
+    <ClCompile Include="System\EnemySpawner.cpp" />
     <ClCompile Include="System\GameActivityBase.cpp" />
     <ClCompile Include="System\RenderManager.cpp" />
     <ClCompile Include="System\Timer.cpp" />
@@ -250,12 +257,22 @@
     <ClInclude Include="Base\Vector2D.h" />
     <ClInclude Include="Component\AnimationComponent.h" />
     <ClInclude Include="Component\Component.h" />
+    <ClInclude Include="GamePlay\BackgroundActor.h" />
+    <ClInclude Include="GamePlay\CharacterActor.h" />
+    <ClInclude Include="GamePlay\Enemy\EnemyBase.h" />
+    <ClInclude Include="GamePlay\Enemy\FastChickenEnemy.h" />
+    <ClInclude Include="GamePlay\Enemy\MediumChickenEnemy.h" />
+    <ClInclude Include="GamePlay\Enemy\SlowChickenEnemy.h" />
     <ClInclude Include="Resource\ResourcePaths.h" />
     <ClInclude Include="System\Actor.h" />
+    <ClInclude Include="System\EnemySpawner.h" />
     <ClInclude Include="System\GameActivityBase.h" />
     <ClInclude Include="System\RenderManager.h" />
     <ClInclude Include="System\Timer.h" />
     <ClInclude Include="System\TimerManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GamePlay\Enemy\" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
