@@ -7,6 +7,7 @@
 #include "../GamePlay/Enemy/MediumChickenEnemy.h"
 
 #include "../GamePlay/BackgroundActor.h"
+#include "../GamePlay/Player.h"
 
 GameActivityBase::~GameActivityBase()
 {
@@ -95,6 +96,7 @@ void GameActivityBase::WorldBeginPlay()
         }
     }
     this->CreateActor<BackgroundActor>();
+    this->CreateActor<Player>(Vector2D(960,800),0);
     bWorldBegunPlay = true;
 }
 

@@ -4,6 +4,7 @@
 #include <vector>
 #include <SDL3/SDL_render.h>
 
+#include "../Base/Atlas.h"
 #include "../Component/Component.h"
 #include "../Base/Vector2D.h"
 
@@ -31,6 +32,7 @@ public:
     float GetScale() const;
 
 protected:
+    static TexturePtr LoadTexture(SDL_Renderer* Renderer, const char* TexturePath);
     int RenderPriority = 0;
     std::vector<std::unique_ptr<Component>> Components;
     Vector2D Position;

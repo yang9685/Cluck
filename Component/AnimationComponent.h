@@ -30,7 +30,7 @@ public:
     const Atlas& GetAtlas() const;
     bool Render(SDL_Renderer* Renderer, const SDL_FRect& DestRect) const;
 
-    void Start(bool bLoop = false, float PlayRate = 1.0f);
+    void Start(bool bLoop = false, float PlayRate = 1.0f, std::function<void()> OnFinished = {});
     void Stop();
     void Pause();
     void Resume();
@@ -43,8 +43,9 @@ public:
 
 private:
     void AdvanceAnimation();
-    void RecreateTimer();
-    void SyncTimerState();
+    void HandleAnimationProgress();
+    void CreateTimer();
+    void DestroyTimer();
     float GetEffectiveFrameIntervalSeconds() const;
 
 private:
@@ -52,5 +53,6 @@ private:
     AnimationPlaybackState PlaybackState;
     TimerHandle FrameAdvanceTimerHandle = InvalidTimerHandle;
     float FrameIntervalSeconds = 0.1f;
+    std::function<void()> FinishCallBack;
     std::reference_wrapper<TimerManager> TimeManager = TimerManager::GetInstance();
 };

@@ -22,8 +22,6 @@ public:
         float InScale,
         float InFrameIntervalSeconds = 0.1f);
 
-    void Render(SDL_Renderer* Renderer) override;
-
     AnimationComponent& GetAnimationComponent();
     const AnimationComponent& GetAnimationComponent() const;
 
@@ -41,15 +39,7 @@ protected:
         std::unique_ptr<Atlas> NewAtlas = std::make_unique<Atlas>();
         for (const char* TexturePath : TexturePaths)
         {
-            SDL_Surface* TextureSurface = SDL_LoadPNG(TexturePath);
-            if (TextureSurface == nullptr)
-            {
-                continue;
-            }
-
-            TexturePtr Texture(SDL_CreateTextureFromSurface(Renderer, TextureSurface));
-            SDL_DestroySurface(TextureSurface);
-
+            TexturePtr Texture = LoadTexture(Renderer, TexturePath);
             if (Texture)
             {
                 NewAtlas->AddFrame(std::move(Texture));

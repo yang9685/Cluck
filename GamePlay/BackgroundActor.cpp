@@ -28,23 +28,11 @@ void BackgroundActor::Render(SDL_Renderer* Renderer)
 
 bool BackgroundActor::EnsureTextureLoaded(SDL_Renderer* Renderer)
 {
-    if (Renderer == nullptr)
-    {
-        return false;
-    }
-
     if (BackgroundTexture)
     {
         return true;
     }
 
-    SDL_Surface* BackgroundSurface = SDL_LoadPNG(Resources::Image::Background);
-    if (BackgroundSurface == nullptr)
-    {
-        return false;
-    }
-
-    BackgroundTexture.reset(SDL_CreateTextureFromSurface(Renderer, BackgroundSurface));
-    SDL_DestroySurface(BackgroundSurface);
+    BackgroundTexture = LoadTexture(Renderer, Resources::Image::Background);
     return BackgroundTexture != nullptr;
 }

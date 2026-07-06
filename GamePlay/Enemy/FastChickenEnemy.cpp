@@ -13,5 +13,4 @@ FastChickenEnemy::FastChickenEnemy(const Vector2D& InPosition, float InRotation)
         0.1f,
         Vector2D(0.0f, 220.0f))
 {
-    GetAnimationComponent().Start(true);
 }

@@ -13,5 +13,4 @@ MediumChickenEnemy::MediumChickenEnemy(const Vector2D& InPosition, float InRotat
         0.1f,
         Vector2D(0.0f, 120.0f))
 {
-    GetAnimationComponent().Start(true);
 }

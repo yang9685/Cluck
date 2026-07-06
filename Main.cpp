@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     GameActivityBase GameActivity;
     GameActivity.InitializeRenderManager(Renderer);
     GameActivity.WorldBeginPlay();
-
+    /*创建主定时器*/
     const float MainLoopIntervalSeconds = GameActivity.GetMainLoopIntervalSeconds();
     const TimerHandle MainLoopTimerHandle = TimeManager.CreateTimer(
         MainLoopIntervalSeconds,

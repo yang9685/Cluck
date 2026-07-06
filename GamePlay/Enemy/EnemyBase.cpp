@@ -21,10 +21,21 @@ EnemyBase::EnemyBase(
 {
 }
 
+void EnemyBase::BeginPlay()
+{
+    CharacterActor::BeginPlay();
+    GetAnimationComponent().Start(true);
+}
+
 void EnemyBase::Tick(float DeltaTime)
 {
     CharacterActor::Tick(DeltaTime);
     Move(DeltaTime);
+}
+
+void EnemyBase::Render(SDL_Renderer* Renderer)
+{
+    GetAnimationComponent().Render(Renderer, GetRenderRect());
 }
 
 void EnemyBase::Move(float DeltaTime)

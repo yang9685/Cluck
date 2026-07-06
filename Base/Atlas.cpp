@@ -79,6 +79,11 @@ SDL_Texture* Atlas::GetCurrentFrameTexture() const
     return CurrentFrame.get();
 }
 
+bool Atlas::IsLastFrame() const
+{
+    return !Frames.empty() && CurrentFrameIndex + 1 == Frames.size();
+}
+
 bool Atlas::IsFinished() const
 {
     return bFinished;

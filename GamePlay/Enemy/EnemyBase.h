@@ -15,7 +15,9 @@ public:
         float InFrameIntervalSeconds,
         const Vector2D& InVelocity);
 
+    void BeginPlay() override;
     void Tick(float DeltaTime) override;
+    void Render(SDL_Renderer* Renderer) override;
 
 protected:
     void Move(float DeltaTime);

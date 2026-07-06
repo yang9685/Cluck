@@ -22,6 +22,7 @@ public:
 
     bool AdvanceFrame(bool bLoop);
     SDL_Texture* GetCurrentFrameTexture() const;
+    bool IsLastFrame() const;
     bool IsFinished() const;
     bool IsValid() const;
 

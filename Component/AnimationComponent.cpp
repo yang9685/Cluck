@@ -12,18 +12,12 @@ AnimationComponent::AnimationComponent(std::unique_ptr<Atlas> InAtlas, float InF
 
 AnimationComponent::~AnimationComponent()
 {
-    if (FrameAdvanceTimerHandle != InvalidTimerHandle)
-    {
-        TimeManager.get().DestroyTimer(FrameAdvanceTimerHandle);
-        FrameAdvanceTimerHandle = InvalidTimerHandle;
-    }
+    DestroyTimer();
 }
 
 void AnimationComponent::BeginPlay()
 {
     Component::BeginPlay();
-    RecreateTimer();
-    SyncTimerState();
 }
 
 void AnimationComponent::SetAtlas(std::unique_ptr<Atlas> InAtlas)
@@ -73,12 +67,15 @@ bool AnimationComponent::Render(SDL_Renderer* Renderer, const SDL_FRect& DestRec
     return true;
 }
 
-void AnimationComponent::Start(bool bLoop, float PlayRate)
+void AnimationComponent::Start(bool bLoop, float PlayRate, std::function<void()> OnFinished)
 {
+    DestroyTimer();
+
     PlaybackState.bLoop = bLoop;
     PlaybackState.bPlaying = true;
     PlaybackState.bPaused = false;
     PlaybackState.PlayRate = PlayRate;
+    FinishCallBack = std::move(OnFinished);
 
     if (AtlasAsset)
     {
@@ -87,8 +84,7 @@ void AnimationComponent::Start(bool bLoop, float PlayRate)
 
     if (HasBegunPlay())
     {
-        RecreateTimer();
-        SyncTimerState();
+        CreateTimer();
     }
 }
 
@@ -102,7 +98,8 @@ void AnimationComponent::Stop()
         AtlasAsset->Reset();
     }
 
-    SyncTimerState();
+    FinishCallBack = {};
+    DestroyTimer();
 }
 
 void AnimationComponent::Pause()
@@ -113,7 +110,10 @@ void AnimationComponent::Pause()
     }
 
     PlaybackState.bPaused = true;
-    SyncTimerState();
+    if (FrameAdvanceTimerHandle != InvalidTimerHandle)
+    {
+        TimeManager.get().StopTimer(FrameAdvanceTimerHandle);
+    }
 }
 
 void AnimationComponent::Resume()
@@ -124,17 +124,23 @@ void AnimationComponent::Resume()
     }
 
     PlaybackState.bPaused = false;
-    SyncTimerState();
+    if (FrameAdvanceTimerHandle != InvalidTimerHandle)
+    {
+        TimeManager.get().StartTimer(FrameAdvanceTimerHandle);
+    }
 }
 
 void AnimationComponent::SetFrameIntervalSeconds(float InFrameIntervalSeconds)
 {
     FrameIntervalSeconds = InFrameIntervalSeconds;
 
-    if (HasBegunPlay())
+    if (HasBegunPlay() && PlaybackState.bPlaying)
     {
-        RecreateTimer();
-        SyncTimerState();
+        CreateTimer();
+        if (PlaybackState.bPaused && FrameAdvanceTimerHandle != InvalidTimerHandle)
+        {
+            TimeManager.get().StopTimer(FrameAdvanceTimerHandle);
+        }
     }
 }
 
@@ -165,32 +171,40 @@ void AnimationComponent::AdvanceAnimation()
         return;
     }
 
-    const bool bAdvanced = AtlasAsset->AdvanceFrame(PlaybackState.bLoop);
-    if (bAdvanced)
+    const bool bReachedAnimationEnd = AtlasAsset->IsLastFrame();
+    AtlasAsset->AdvanceFrame(PlaybackState.bLoop);
+    HandleAnimationProgress();
+
+    if (!bReachedAnimationEnd || !FinishCallBack)
     {
         return;
     }
 
-    if (!PlaybackState.bLoop && AtlasAsset->IsFinished())
+    std::function<void()> CurrentFinishCallBack = std::move(FinishCallBack);
+    CurrentFinishCallBack();
+}
+
+void AnimationComponent::HandleAnimationProgress()
+{
+    if (!AtlasAsset || !AtlasAsset->IsFinished())
+    {
+        return;
+    }
+
+    if (!PlaybackState.bLoop)
     {
         PlaybackState.bPlaying = false;
         PlaybackState.bPaused = false;
-        SyncTimerState();
-    }
-}
-
-void AnimationComponent::RecreateTimer()
-{
-    if (!HasBegunPlay())
-    {
+        DestroyTimer();
         return;
     }
 
-    if (FrameAdvanceTimerHandle != InvalidTimerHandle)
-    {
-        TimeManager.get().DestroyTimer(FrameAdvanceTimerHandle);
-        FrameAdvanceTimerHandle = InvalidTimerHandle;
-    }
+    AtlasAsset->Reset();
+}
+
+void AnimationComponent::CreateTimer()
+{
+    DestroyTimer();
 
     if (FrameIntervalSeconds <= 0.0f)
     {
@@ -206,20 +220,13 @@ void AnimationComponent::RecreateTimer()
         });
 }
 
-void AnimationComponent::SyncTimerState()
+void AnimationComponent::DestroyTimer()
 {
-    if (FrameAdvanceTimerHandle == InvalidTimerHandle)
+    if (FrameAdvanceTimerHandle != InvalidTimerHandle)
     {
-        return;
+        TimeManager.get().DestroyTimer(FrameAdvanceTimerHandle);
+        FrameAdvanceTimerHandle = InvalidTimerHandle;
     }
-
-    if (PlaybackState.bPlaying && !PlaybackState.bPaused)
-    {
-        TimeManager.get().StartTimer(FrameAdvanceTimerHandle);
-        return;
-    }
-
-    TimeManager.get().StopTimer(FrameAdvanceTimerHandle);
 }
 
 float AnimationComponent::GetEffectiveFrameIntervalSeconds() const

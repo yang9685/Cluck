@@ -13,11 +13,6 @@ CharacterActor::CharacterActor(
 {
 }
 
-void CharacterActor::Render(SDL_Renderer* Renderer)
-{
-    Animation.Render(Renderer, GetRenderRect());
-}
-
 AnimationComponent& CharacterActor::GetAnimationComponent()
 {
     return Animation;

@@ -1,5 +1,6 @@
 #include "Actor.h"
 
+#include <SDL3/SDL.h>
 #include <stdexcept>
 
 Actor::Actor(const Vector2D& InPosition, float InRotation, int InRenderPriority, const Vector2D& InBaseRenderSize, float InScale)
@@ -38,6 +39,24 @@ void Actor::Tick(float DeltaTime)
 void Actor::Render(SDL_Renderer* Renderer)
 {
     (void)Renderer;
+}
+
+TexturePtr Actor::LoadTexture(SDL_Renderer* Renderer, const char* TexturePath)
+{
+    if (Renderer == nullptr)
+    {
+        return TexturePtr(nullptr);
+    }
+
+    SDL_Surface* TextureSurface = SDL_LoadPNG(TexturePath);
+    if (TextureSurface == nullptr)
+    {
+        return TexturePtr(nullptr);
+    }
+
+    TexturePtr Texture(SDL_CreateTextureFromSurface(Renderer, TextureSurface));
+    SDL_DestroySurface(TextureSurface);
+    return Texture;
 }
 
 Component& Actor::AddComponent(std::unique_ptr<Component> NewComponent)

@@ -239,6 +239,7 @@
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="GamePlay\BackgroundActor.cpp" />
     <ClCompile Include="GamePlay\CharacterActor.cpp" />
+    <ClCompile Include="GamePlay\Player.cpp" />
     <ClCompile Include="GamePlay\Enemy\EnemyBase.cpp" />
     <ClCompile Include="GamePlay\Enemy\FastChickenEnemy.cpp" />
     <ClCompile Include="GamePlay\Enemy\MediumChickenEnemy.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="Component\Component.h" />
     <ClInclude Include="GamePlay\BackgroundActor.h" />
     <ClInclude Include="GamePlay\CharacterActor.h" />
+    <ClInclude Include="GamePlay\Player.h" />
     <ClInclude Include="GamePlay\Enemy\EnemyBase.h" />
     <ClInclude Include="GamePlay\Enemy\FastChickenEnemy.h" />
     <ClInclude Include="GamePlay\Enemy\MediumChickenEnemy.h" />

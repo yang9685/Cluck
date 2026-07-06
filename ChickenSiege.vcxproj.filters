@@ -27,6 +27,9 @@
     <ClCompile Include="GamePlay\CharacterActor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GamePlay\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GamePlay\Enemy\EnemyBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GamePlay\CharacterActor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePlay\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GamePlay\Enemy\EnemyBase.h">
