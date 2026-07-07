@@ -35,7 +35,12 @@ void EnemyBase::Tick(float DeltaTime)
 
 void EnemyBase::Render(SDL_Renderer* Renderer)
 {
-    GetAnimationComponent().Render(Renderer, GetRenderRect());
+    const SDL_FRect& RenderRect = GetRenderRect();
+    const SDL_FPoint RotationCenter = {
+        RenderRect.w * 0.5f,
+        RenderRect.h * 0.5f,
+    };
+    GetAnimationComponent().Render(Renderer, RenderRect, GetRotation(), RotationCenter);
 }
 
 void EnemyBase::Move(float DeltaTime)

@@ -8,6 +8,7 @@
 
 #include "Actor.h"
 #include "EnemySpawner.h"
+#include "PlayerController.h"
 #include "RenderManager.h"
 
 enum GameStatus
@@ -37,6 +38,7 @@ public:
 
     virtual void WorldBeginPlay();
     virtual void WorldEndPlay();
+    void RequestExit();
 
     size_t GetActorCount() const;
     const std::vector<std::unique_ptr<Actor>>& GetActors() const;
@@ -67,6 +69,7 @@ private:
     std::vector<std::unique_ptr<Actor>> Actors;
     std::vector<Actor*> PendingDestroyActors;
     std::reference_wrapper<EnemySpawner> EnemySpawnerInstance = EnemySpawner::GetInstance();
+    std::reference_wrapper<PlayerController> PlayerControllerInstance = PlayerController::GetInstance();
     std::reference_wrapper<RenderManager> RenderManagerInstance = RenderManager::GetInstance();
     float MainLoopIntervalSeconds = 1.0f / 60.0f;
     bool bWorldBegunPlay = false;

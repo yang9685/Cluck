@@ -45,6 +45,9 @@
     <ClCompile Include="System\EnemySpawner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="System\PlayerController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="System\RenderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="System\EnemySpawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\PlayerController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="System\RenderManager.h">

@@ -33,6 +33,7 @@ public:
 
 protected:
     static TexturePtr LoadTexture(SDL_Renderer* Renderer, const char* TexturePath);
+    static float NormalizeAngleDegrees(float AngleDegrees);
     int RenderPriority = 0;
     std::vector<std::unique_ptr<Component>> Components;
     Vector2D Position;

@@ -59,6 +59,21 @@ TexturePtr Actor::LoadTexture(SDL_Renderer* Renderer, const char* TexturePath)
     return Texture;
 }
 
+float Actor::NormalizeAngleDegrees(float AngleDegrees)
+{
+    while (AngleDegrees > 180.0f)
+    {
+        AngleDegrees -= 360.0f;
+    }
+
+    while (AngleDegrees < -180.0f)
+    {
+        AngleDegrees += 360.0f;
+    }
+
+    return AngleDegrees;
+}
+
 Component& Actor::AddComponent(std::unique_ptr<Component> NewComponent)
 {
     if (!NewComponent)

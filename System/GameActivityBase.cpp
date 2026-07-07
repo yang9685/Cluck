@@ -7,7 +7,6 @@
 #include "../GamePlay/Enemy/MediumChickenEnemy.h"
 
 #include "../GamePlay/BackgroundActor.h"
-#include "../GamePlay/Player.h"
 
 GameActivityBase::~GameActivityBase()
 {
@@ -49,11 +48,13 @@ Actor& GameActivityBase::AddActor(std::unique_ptr<Actor> NewActor)
 
 void GameActivityBase::InitializeSingletons()
 {
+    PlayerControllerInstance.get().Initialize(*this);
     EnemySpawnerInstance.get().Initialize(*this);
 }
 
 void GameActivityBase::UpdateSingletons()
 {
+    PlayerControllerInstance.get().Update();
     RenderManagerInstance.get().Update(Actors);
 }
 
@@ -87,6 +88,7 @@ void GameActivityBase::WorldBeginPlay()
         return;
     }
 
+    CurrentGameStatus = Pending;
     InitializeSingletons();
     for (const std::unique_ptr<Actor>& ActorInstance : Actors)
     {
@@ -96,14 +98,19 @@ void GameActivityBase::WorldBeginPlay()
         }
     }
     this->CreateActor<BackgroundActor>();
-    this->CreateActor<Player>(Vector2D(960,800),0);
     bWorldBegunPlay = true;
 }
 
 void GameActivityBase::WorldEndPlay()
 {
+    PlayerControllerInstance.get().Shutdown();
     EnemySpawnerInstance.get().Shutdown();
     bWorldBegunPlay = false;
+}
+
+void GameActivityBase::RequestExit()
+{
+    CurrentGameStatus = Success;
 }
 
 size_t GameActivityBase::GetActorCount() const

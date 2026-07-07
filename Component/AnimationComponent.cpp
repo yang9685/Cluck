@@ -50,7 +50,11 @@ const Atlas& AnimationComponent::GetAtlas() const
     return *AtlasAsset;
 }
 
-bool AnimationComponent::Render(SDL_Renderer* Renderer, const SDL_FRect& DestRect) const
+bool AnimationComponent::Render(
+    SDL_Renderer* Renderer,
+    const SDL_FRect& DestRect,
+    double AngleDegrees,
+    const SDL_FPoint& RotationCenter) const
 {
     if (Renderer == nullptr || !AtlasAsset)
     {
@@ -63,7 +67,14 @@ bool AnimationComponent::Render(SDL_Renderer* Renderer, const SDL_FRect& DestRec
         return false;
     }
 
-    SDL_RenderTexture(Renderer, CurrentFrameTexture, nullptr, &DestRect);
+    SDL_RenderTextureRotated(
+        Renderer,
+        CurrentFrameTexture,
+        nullptr,
+        &DestRect,
+        AngleDegrees,
+        &RotationCenter,
+        SDL_FLIP_NONE);
     return true;
 }
 

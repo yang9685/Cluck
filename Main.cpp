@@ -27,24 +27,8 @@ int main(int argc, char* argv[])
             GameActivity.GameLoop(MainLoopIntervalSeconds);
         });
 
-    bool bIsRunning = true;
-    
-    while (bIsRunning)
+    while (GameActivity.GetCurrentGameStatus() == Pending)
     {
-        SDL_Event Event;
-
-        while (SDL_PollEvent(&Event))
-        {
-            if (Event.type == SDL_EVENT_QUIT)
-            {
-                bIsRunning = false;
-            }
-            else if (Event.type == SDL_EVENT_KEY_DOWN && Event.key.key == SDLK_ESCAPE)
-            {
-                bIsRunning = false;
-            }
-        }
-
         TimeManager.Update();
     }
     

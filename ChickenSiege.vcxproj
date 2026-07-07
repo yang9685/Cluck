@@ -248,6 +248,7 @@
     <ClCompile Include="System\Actor.cpp" />
     <ClCompile Include="System\EnemySpawner.cpp" />
     <ClCompile Include="System\GameActivityBase.cpp" />
+    <ClCompile Include="System\PlayerController.cpp" />
     <ClCompile Include="System\RenderManager.cpp" />
     <ClCompile Include="System\Timer.cpp" />
     <ClCompile Include="System\TimerManager.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="System\Actor.h" />
     <ClInclude Include="System\EnemySpawner.h" />
     <ClInclude Include="System\GameActivityBase.h" />
+    <ClInclude Include="System\PlayerController.h" />
     <ClInclude Include="System\RenderManager.h" />
     <ClInclude Include="System\Timer.h" />
     <ClInclude Include="System\TimerManager.h" />

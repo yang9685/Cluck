@@ -28,7 +28,11 @@ public:
     bool HasAtlas() const;
     Atlas& GetAtlas();
     const Atlas& GetAtlas() const;
-    bool Render(SDL_Renderer* Renderer, const SDL_FRect& DestRect) const;
+    bool Render(
+        SDL_Renderer* Renderer,
+        const SDL_FRect& DestRect,
+        double AngleDegrees,
+        const SDL_FPoint& RotationCenter) const;
 
     void Start(bool bLoop = false, float PlayRate = 1.0f, std::function<void()> OnFinished = {});
     void Stop();
