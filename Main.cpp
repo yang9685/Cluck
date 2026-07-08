@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
     SDL_Renderer* Renderer = SDL_CreateRenderer(Window, nullptr);
 
     TimerManager& TimeManager = TimerManager::GetInstance();
-    GameActivityBase GameActivity;
+    GameActivityBase& GameActivity = GameActivityBase::GetInstance();
     GameActivity.InitializeRenderManager(Renderer);
     GameActivity.WorldBeginPlay();
     /*创建主定时器*/

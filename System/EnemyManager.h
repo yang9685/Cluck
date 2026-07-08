@@ -1,11 +1,13 @@
 #pragma once
 
 #include <functional>
+#include <vector>
 
 #include "../Base/Types.h"
 #include "TimerManager.h"
 
 class GameActivityBase;
+class EnemyBase;
 
 struct EnemySpawnWeights
 {
@@ -14,29 +16,32 @@ struct EnemySpawnWeights
     double Slow = 5.0;
 };
 
-class EnemySpawner
+class EnemyManager
 {
 private:
-    EnemySpawner() = default;
-    ~EnemySpawner() = default;
+    EnemyManager() = default;
+    ~EnemyManager() = default;
 
-    EnemySpawner(const EnemySpawner&) = delete;
-    EnemySpawner& operator=(const EnemySpawner&) = delete;
+    EnemyManager(const EnemyManager&) = delete;
+    EnemyManager& operator=(const EnemyManager&) = delete;
 
 public:
-    static EnemySpawner& GetInstance()
+    static EnemyManager& GetInstance()
     {
-        static EnemySpawner Instance;
+        static EnemyManager Instance;
         return Instance;
     }
 
     void Initialize(GameActivityBase& InGameActivity);
     void Shutdown();
+    void Update();
     void SetSpawnWeights(const EnemySpawnWeights& InSpawnWeights);
     const EnemySpawnWeights& GetSpawnWeights() const;
+    const std::vector<EnemyBase*>& GetEnemies() const;
 
 private:
     void SpawnEnemy();
+    void CleanupInvalidEnemies();
 
 private:
     std::reference_wrapper<TimerManager> TimeManager = TimerManager::GetInstance();
@@ -44,4 +49,5 @@ private:
     TimerHandle SpawnTimerHandle = InvalidTimerHandle;
     float SpawnIntervalSeconds = 1.0f;
     EnemySpawnWeights SpawnWeights;
+    std::vector<EnemyBase*> Enemies;
 };

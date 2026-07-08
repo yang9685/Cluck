@@ -14,6 +14,8 @@ public:
     float GetTargetRotation() const;
 
 private:
+    void SpawnBullet();
+
     TexturePtr BarrelIdleTexture;
     TexturePtr BatteryTexture;
     SDL_FRect BarrelRenderRect = {0.0f, 0.0f, 0.0f, 0.0f};

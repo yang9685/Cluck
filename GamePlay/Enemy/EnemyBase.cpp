@@ -1,5 +1,7 @@
 #include "EnemyBase.h"
 
+#include "../../System/GameActivityBase.h"
+
 EnemyBase::EnemyBase(
     std::unique_ptr<Atlas> InAtlas,
     const Vector2D& InPosition,
@@ -41,6 +43,11 @@ void EnemyBase::Render(SDL_Renderer* Renderer)
         RenderRect.h * 0.5f,
     };
     GetAnimationComponent().Render(Renderer, RenderRect, GetRotation(), RotationCenter);
+}
+
+void EnemyBase::Die()
+{
+    GameActivityBase::GetInstance().DestroyActor(*this);
 }
 
 void EnemyBase::Move(float DeltaTime)

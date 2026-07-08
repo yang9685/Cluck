@@ -18,6 +18,7 @@ public:
     void BeginPlay() override;
     void Tick(float DeltaTime) override;
     void Render(SDL_Renderer* Renderer) override;
+    void Die();
 
 protected:
     void Move(float DeltaTime);

@@ -238,6 +238,7 @@
     </ClCompile>
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="GamePlay\BackgroundActor.cpp" />
+    <ClCompile Include="GamePlay\Bullet.cpp" />
     <ClCompile Include="GamePlay\CharacterActor.cpp" />
     <ClCompile Include="GamePlay\Player.cpp" />
     <ClCompile Include="GamePlay\Enemy\EnemyBase.cpp" />
@@ -246,7 +247,9 @@
     <ClCompile Include="GamePlay\Enemy\SlowChickenEnemy.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="System\Actor.cpp" />
-    <ClCompile Include="System\EnemySpawner.cpp" />
+    <ClCompile Include="System\BulletManager.cpp" />
+    <ClCompile Include="System\CollisionManager.cpp" />
+    <ClCompile Include="System\EnemyManager.cpp" />
     <ClCompile Include="System\GameActivityBase.cpp" />
     <ClCompile Include="System\PlayerController.cpp" />
     <ClCompile Include="System\RenderManager.cpp" />
@@ -260,6 +263,7 @@
     <ClInclude Include="Component\AnimationComponent.h" />
     <ClInclude Include="Component\Component.h" />
     <ClInclude Include="GamePlay\BackgroundActor.h" />
+    <ClInclude Include="GamePlay\Bullet.h" />
     <ClInclude Include="GamePlay\CharacterActor.h" />
     <ClInclude Include="GamePlay\Player.h" />
     <ClInclude Include="GamePlay\Enemy\EnemyBase.h" />
@@ -268,7 +272,9 @@
     <ClInclude Include="GamePlay\Enemy\SlowChickenEnemy.h" />
     <ClInclude Include="Resource\ResourcePaths.h" />
     <ClInclude Include="System\Actor.h" />
-    <ClInclude Include="System\EnemySpawner.h" />
+    <ClInclude Include="System\BulletManager.h" />
+    <ClInclude Include="System\CollisionManager.h" />
+    <ClInclude Include="System\EnemyManager.h" />
     <ClInclude Include="System\GameActivityBase.h" />
     <ClInclude Include="System\PlayerController.h" />
     <ClInclude Include="System\RenderManager.h" />

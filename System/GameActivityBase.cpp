@@ -48,13 +48,20 @@ Actor& GameActivityBase::AddActor(std::unique_ptr<Actor> NewActor)
 
 void GameActivityBase::InitializeSingletons()
 {
+    BulletManagerInstance.get().Initialize(*this);
     PlayerControllerInstance.get().Initialize(*this);
-    EnemySpawnerInstance.get().Initialize(*this);
+    EnemyManagerInstance.get().Initialize(*this);
 }
 
 void GameActivityBase::UpdateSingletons()
 {
     PlayerControllerInstance.get().Update();
+    BulletManagerInstance.get().Update();
+    EnemyManagerInstance.get().Update();
+    CollisionManagerInstance.get().Update();
+    ProcessPendingDestroyActors();
+    BulletManagerInstance.get().Update();
+    EnemyManagerInstance.get().Update();
     RenderManagerInstance.get().Update(Actors);
 }
 
@@ -103,8 +110,9 @@ void GameActivityBase::WorldBeginPlay()
 
 void GameActivityBase::WorldEndPlay()
 {
+    BulletManagerInstance.get().Shutdown();
     PlayerControllerInstance.get().Shutdown();
-    EnemySpawnerInstance.get().Shutdown();
+    EnemyManagerInstance.get().Shutdown();
     bWorldBegunPlay = false;
 }
 

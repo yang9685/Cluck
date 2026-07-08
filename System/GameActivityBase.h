@@ -7,7 +7,9 @@
 #include <vector>
 
 #include "Actor.h"
-#include "EnemySpawner.h"
+#include "BulletManager.h"
+#include "CollisionManager.h"
+#include "EnemyManager.h"
 #include "PlayerController.h"
 #include "RenderManager.h"
 
@@ -21,6 +23,12 @@ enum GameStatus
 class GameActivityBase
 {
 public:
+    static GameActivityBase& GetInstance()
+    {
+        static GameActivityBase Instance;
+        return Instance;
+    }
+
     virtual ~GameActivityBase();
     virtual GameStatus GameLoop(float DeltaTime);
     void InitializeRenderManager(SDL_Renderer* Renderer);
@@ -52,6 +60,9 @@ public:
     GameStatus GetCurrentGameStatus() const;
     bool HasWorldBegunPlay() const;
 
+    GameActivityBase(const GameActivityBase&) = delete;
+    GameActivityBase& operator=(const GameActivityBase&) = delete;
+
 protected:
     virtual void InitializeSingletons();
     virtual void UpdateSingletons();
@@ -62,13 +73,16 @@ protected:
     bool IsActorPendingDestroy(const Actor& ActorInstance) const;
 
 private:
+    GameActivityBase() = default;
     Actor& AddActor(std::unique_ptr<Actor> NewActor);
 
 private:
     GameStatus CurrentGameStatus = Pending;
     std::vector<std::unique_ptr<Actor>> Actors;
     std::vector<Actor*> PendingDestroyActors;
-    std::reference_wrapper<EnemySpawner> EnemySpawnerInstance = EnemySpawner::GetInstance();
+    std::reference_wrapper<BulletManager> BulletManagerInstance = BulletManager::GetInstance();
+    std::reference_wrapper<CollisionManager> CollisionManagerInstance = CollisionManager::GetInstance();
+    std::reference_wrapper<EnemyManager> EnemyManagerInstance = EnemyManager::GetInstance();
     std::reference_wrapper<PlayerController> PlayerControllerInstance = PlayerController::GetInstance();
     std::reference_wrapper<RenderManager> RenderManagerInstance = RenderManager::GetInstance();
     float MainLoopIntervalSeconds = 1.0f / 60.0f;

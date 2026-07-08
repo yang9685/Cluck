@@ -2,9 +2,12 @@
 
 #include <algorithm>
 #include <cmath>
+#include <random>
 
 #include "../Base/Types.h"
 #include "../Resource/ResourcePaths.h"
+#include "../System/BulletManager.h"
+#include "Bullet.h"
 
 namespace
 {
@@ -12,6 +15,13 @@ constexpr float BackgroundSourceWidth = 1344.0f;
 constexpr float BackgroundSourceHeight = 800.0f;
 constexpr float PlayerAnchorBackgroundX = 672.0f;
 constexpr float PlayerAnchorBackgroundY = 642.0f;
+constexpr float BarrelMuzzleXFactor = 1.0f;
+constexpr float BarrelMuzzleYFactor = 0.5f;
+constexpr float BulletSpawnWidth = 8.0f;
+constexpr float BulletSpawnHeight = 3.0f;
+constexpr float BulletSpawnScale = 1.5f;
+constexpr float BulletRotationMaxOffsetDegrees = 15.0f;
+constexpr float DegreesToRadians = 3.14159265358979323846f / 180.0f;
 
 float GetBackgroundScale()
 {
@@ -30,6 +40,16 @@ Vector2D GetPlayerAnchorOnScreen()
     return Vector2D(
         BackgroundX + PlayerAnchorBackgroundX * BackgroundScale,
         BackgroundY + PlayerAnchorBackgroundY * BackgroundScale);
+}
+
+float GetRandomBulletRotationOffsetDegrees()
+{
+    static std::random_device RandomDevice;
+    static std::mt19937 RandomEngine(RandomDevice());
+    static std::uniform_real_distribution<float> OffsetDistribution(
+        -BulletRotationMaxOffsetDegrees,
+        BulletRotationMaxOffsetDegrees);
+    return OffsetDistribution(RandomEngine);
 }
 }
 
@@ -115,11 +135,38 @@ void Player::Fire()
     {
         return;
     }
+
+    SpawnBullet();
+
     bFire = true;
-    GetAnimationComponent().Start(false, 2.0f, [this]()
+    GetAnimationComponent().Start(false, 1.5f, [this]()
     {
         bFire = false;
     });
+}
+
+void Player::SpawnBullet()
+{
+    const float RotationRadians = GetRotation() * DegreesToRadians;
+    const float BulletRotation = NormalizeAngleDegrees(GetRotation() + GetRandomBulletRotationOffsetDegrees());
+    const Vector2D BarrelPivotWorld(
+        BarrelRenderRect.x + BarrelRotateCenter.x,
+        BarrelRenderRect.y + BarrelRotateCenter.y);
+    const Vector2D BarrelMuzzleLocal(
+        BarrelRenderRect.w * BarrelMuzzleXFactor,
+        BarrelRenderRect.h * BarrelMuzzleYFactor);
+    const Vector2D MuzzleOffset(
+        BarrelMuzzleLocal.x - BarrelRotateCenter.x,
+        BarrelMuzzleLocal.y - BarrelRotateCenter.y);
+    const Vector2D RotatedMuzzleOffset(
+        MuzzleOffset.x * std::cos(RotationRadians) - MuzzleOffset.y * std::sin(RotationRadians),
+        MuzzleOffset.x * std::sin(RotationRadians) + MuzzleOffset.y * std::cos(RotationRadians));
+    const Vector2D BulletCenter = BarrelPivotWorld + RotatedMuzzleOffset;
+    const Vector2D BulletSpawnPosition(
+        BulletCenter.x - BulletSpawnWidth * BulletSpawnScale * 0.5f,
+        BulletCenter.y - BulletSpawnHeight * BulletSpawnScale * 0.5f);
+
+    BulletManager::GetInstance().CreateBullet(BulletSpawnPosition, BulletRotation, 800.0f, BulletSpawnScale);
 }
 
 void Player::SetTargetRotation(float InTargetRotation)
