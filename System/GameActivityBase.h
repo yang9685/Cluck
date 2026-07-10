@@ -9,6 +9,7 @@
 #include "Actor.h"
 #include "AudioManager.h"
 #include "BulletManager.h"
+#include "CameraManager.h"
 #include "CollisionManager.h"
 #include "EnemyManager.h"
 #include "PlayerController.h"
@@ -83,6 +84,7 @@ private:
     std::vector<Actor*> PendingDestroyActors;
     std::reference_wrapper<AudioManager> AudioManagerInstance = AudioManager::GetInstance();
     std::reference_wrapper<BulletManager> BulletManagerInstance = BulletManager::GetInstance();
+    std::reference_wrapper<CameraManager> CameraManagerInstance = CameraManager::GetInstance();
     std::reference_wrapper<CollisionManager> CollisionManagerInstance = CollisionManager::GetInstance();
     std::reference_wrapper<EnemyManager> EnemyManagerInstance = EnemyManager::GetInstance();
     std::reference_wrapper<PlayerController> PlayerControllerInstance = PlayerController::GetInstance();

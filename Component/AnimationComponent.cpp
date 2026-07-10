@@ -4,6 +4,8 @@
 
 #include <SDL3/SDL_render.h>
 
+#include "../System/RenderManager.h"
+
 AnimationComponent::AnimationComponent(std::unique_ptr<Atlas> InAtlas, float InFrameIntervalSeconds)
     : AtlasAsset(std::move(InAtlas))
     , FrameIntervalSeconds(InFrameIntervalSeconds)
@@ -67,15 +69,11 @@ bool AnimationComponent::Render(
         return false;
     }
 
-    SDL_RenderTextureRotated(
-        Renderer,
+    return RenderManager::GetInstance().RenderTextureRotated(
         CurrentFrameTexture,
-        nullptr,
-        &DestRect,
+        DestRect,
         AngleDegrees,
-        &RotationCenter,
-        SDL_FLIP_NONE);
-    return true;
+        RotationCenter);
 }
 
 void AnimationComponent::Start(bool bLoop, float PlayRate, std::function<void()> OnFinished)

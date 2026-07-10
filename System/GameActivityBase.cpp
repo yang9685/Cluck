@@ -51,6 +51,7 @@ void GameActivityBase::InitializeSingletons()
 {
     AudioManagerInstance.get().Initialize();
     BulletManagerInstance.get().Initialize(*this);
+    CameraManagerInstance.get().Initialize();
     PlayerControllerInstance.get().Initialize(*this);
     EnemyManagerInstance.get().Initialize(*this);
 }
@@ -60,6 +61,7 @@ void GameActivityBase::UpdateSingletons()
     PlayerControllerInstance.get().Update();
     AudioManagerInstance.get().Update();
     BulletManagerInstance.get().Update();
+    CameraManagerInstance.get().Update(MainLoopIntervalSeconds);
     EnemyManagerInstance.get().Update();
     CollisionManagerInstance.get().Update();
     ProcessPendingDestroyActors();

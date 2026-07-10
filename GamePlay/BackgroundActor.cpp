@@ -6,6 +6,7 @@
 
 #include "../Base/Types.h"
 #include "../Resource/ResourcePaths.h"
+#include "../System/RenderManager.h"
 
 namespace
 {
@@ -56,7 +57,7 @@ void BackgroundActor::Render(SDL_Renderer* Renderer)
     }
 
     const SDL_FRect& BackgroundRect = GetRenderRect();
-    SDL_RenderTexture(Renderer, BackgroundTexture.get(), nullptr, &BackgroundRect);
+    RenderManager::GetInstance().RenderTexture(BackgroundTexture.get(), BackgroundRect);
 }
 
 bool BackgroundActor::EnsureTextureLoaded(SDL_Renderer* Renderer)

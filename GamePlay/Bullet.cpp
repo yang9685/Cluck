@@ -49,16 +49,11 @@ void Bullet::Render(SDL_Renderer* Renderer)
         return;
     }
 
-    const SDL_FRect& BulletRenderRect = GetRenderRect();
-
-    SDL_RenderTextureRotated(
-        Renderer,
+    RenderManager::GetInstance().RenderTextureRotated(
         BulletTexture.get(),
-        nullptr,
-        &GetRenderRect(),
+        GetRenderRect(),
         GetRotation(),
-        &Rotation_Center,
-        SDL_FLIP_NONE);
+        Rotation_Center);
 }
 
 void Bullet::SetSpeed(float InSpeed)

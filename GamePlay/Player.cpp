@@ -8,6 +8,8 @@
 #include "../Resource/ResourcePaths.h"
 #include "../System/AudioManager.h"
 #include "../System/BulletManager.h"
+#include "../System/CameraManager.h"
+#include "../System/RenderManager.h"
 #include "Bullet.h"
 
 namespace
@@ -22,6 +24,8 @@ constexpr float BulletSpawnWidth = 8.0f;
 constexpr float BulletSpawnHeight = 3.0f;
 constexpr float BulletSpawnScale = 1.5f;
 constexpr float BulletRotationMaxOffsetDegrees = 15.0f;
+constexpr float FireShakeDurationSeconds = 0.08f;
+constexpr float FireShakeAmplitude = 15.0f;
 constexpr float DegreesToRadians = 3.14159265358979323846f / 180.0f;
 
 float GetBackgroundScale()
@@ -100,28 +104,22 @@ void Player::Render(SDL_Renderer* Renderer)
 
     if (BatteryTexture)
     {
-        SDL_RenderTextureRotated(
-            Renderer,
+        RenderManager::GetInstance().RenderTextureRotated(
             BatteryTexture.get(),
-            nullptr,
-            &BatteryRenderRect,
+            BatteryRenderRect,
             0,
-            &BatteryRotateCenter,
-            SDL_FLIP_NONE);
+            BatteryRotateCenter);
     }
 
     if (!bFire)
     {
         if (BarrelIdleTexture)
         {
-            SDL_RenderTextureRotated(
-                Renderer,
+            RenderManager::GetInstance().RenderTextureRotated(
                 BarrelIdleTexture.get(),
-                nullptr,
-                &BarrelRenderRect,
+                BarrelRenderRect,
                 RotationAngle,
-                &BarrelRotateCenter,
-                SDL_FLIP_NONE);
+                BarrelRotateCenter);
         }
 
         return;
@@ -139,6 +137,7 @@ void Player::Fire()
 
     SpawnBullet();
     AudioManager::GetInstance().PlayAudio(Resources::AudioKey::Fire);
+    CameraManager::GetInstance().StartRecoilShake(GetRotation(), FireShakeDurationSeconds, FireShakeAmplitude);
 
     bFire = true;
     GetAnimationComponent().Start(false, 1.5f, [this]()

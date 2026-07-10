@@ -2,9 +2,9 @@
 #include <memory>
 #include <vector>
 
-#include "Actor.h"
+#include <SDL3/SDL_render.h>
 
-struct SDL_Renderer;
+#include "Actor.h"
 
 class RenderManager
 {
@@ -25,6 +25,15 @@ public:
     void Initialize(SDL_Renderer* Renderer);
     void Update(const std::vector<std::unique_ptr<Actor>>& Actors);
     SDL_Renderer* GetRenderer() const;
+    SDL_FRect ApplyCameraOffset(const SDL_FRect& InRect) const;
+    bool RenderTexture(SDL_Texture* Texture, const SDL_FRect& DestRect, const SDL_FRect* SourceRect = nullptr) const;
+    bool RenderTextureRotated(
+        SDL_Texture* Texture,
+        const SDL_FRect& DestRect,
+        double AngleDegrees,
+        const SDL_FPoint& RotationCenter,
+        const SDL_FRect* SourceRect = nullptr,
+        SDL_FlipMode Flip = SDL_FLIP_NONE) const;
 
 private:
     SDL_Renderer* Renderer = nullptr;

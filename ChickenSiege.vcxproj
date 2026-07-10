@@ -250,6 +250,7 @@
     <ClCompile Include="System\Actor.cpp" />
     <ClCompile Include="System\AudioManager.cpp" />
     <ClCompile Include="System\BulletManager.cpp" />
+    <ClCompile Include="System\CameraManager.cpp" />
     <ClCompile Include="System\CollisionManager.cpp" />
     <ClCompile Include="System\EnemyManager.cpp" />
     <ClCompile Include="System\GameActivityBase.cpp" />
@@ -277,6 +278,7 @@
     <ClInclude Include="System\Actor.h" />
     <ClInclude Include="System\AudioManager.h" />
     <ClInclude Include="System\BulletManager.h" />
+    <ClInclude Include="System\CameraManager.h" />
     <ClInclude Include="System\CollisionManager.h" />
     <ClInclude Include="System\EnemyManager.h" />
     <ClInclude Include="System\GameActivityBase.h" />
