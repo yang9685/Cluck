@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Actor.h"
+#include "AudioManager.h"
 #include "BulletManager.h"
 #include "CollisionManager.h"
 #include "EnemyManager.h"
@@ -80,6 +81,7 @@ private:
     GameStatus CurrentGameStatus = Pending;
     std::vector<std::unique_ptr<Actor>> Actors;
     std::vector<Actor*> PendingDestroyActors;
+    std::reference_wrapper<AudioManager> AudioManagerInstance = AudioManager::GetInstance();
     std::reference_wrapper<BulletManager> BulletManagerInstance = BulletManager::GetInstance();
     std::reference_wrapper<CollisionManager> CollisionManagerInstance = CollisionManager::GetInstance();
     std::reference_wrapper<EnemyManager> EnemyManagerInstance = EnemyManager::GetInstance();

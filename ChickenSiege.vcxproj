@@ -237,6 +237,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Component\Component.cpp" />
+    <ClCompile Include="Component\DeathComponent.cpp" />
     <ClCompile Include="GamePlay\BackgroundActor.cpp" />
     <ClCompile Include="GamePlay\Bullet.cpp" />
     <ClCompile Include="GamePlay\CharacterActor.cpp" />
@@ -247,6 +248,7 @@
     <ClCompile Include="GamePlay\Enemy\SlowChickenEnemy.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="System\Actor.cpp" />
+    <ClCompile Include="System\AudioManager.cpp" />
     <ClCompile Include="System\BulletManager.cpp" />
     <ClCompile Include="System\CollisionManager.cpp" />
     <ClCompile Include="System\EnemyManager.cpp" />
@@ -262,6 +264,7 @@
     <ClInclude Include="Base\Vector2D.h" />
     <ClInclude Include="Component\AnimationComponent.h" />
     <ClInclude Include="Component\Component.h" />
+    <ClInclude Include="Component\DeathComponent.h" />
     <ClInclude Include="GamePlay\BackgroundActor.h" />
     <ClInclude Include="GamePlay\Bullet.h" />
     <ClInclude Include="GamePlay\CharacterActor.h" />
@@ -272,6 +275,7 @@
     <ClInclude Include="GamePlay\Enemy\SlowChickenEnemy.h" />
     <ClInclude Include="Resource\ResourcePaths.h" />
     <ClInclude Include="System\Actor.h" />
+    <ClInclude Include="System\AudioManager.h" />
     <ClInclude Include="System\BulletManager.h" />
     <ClInclude Include="System\CollisionManager.h" />
     <ClInclude Include="System\EnemyManager.h" />

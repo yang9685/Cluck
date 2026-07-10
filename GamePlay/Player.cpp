@@ -6,6 +6,7 @@
 
 #include "../Base/Types.h"
 #include "../Resource/ResourcePaths.h"
+#include "../System/AudioManager.h"
 #include "../System/BulletManager.h"
 #include "Bullet.h"
 
@@ -137,6 +138,7 @@ void Player::Fire()
     }
 
     SpawnBullet();
+    AudioManager::GetInstance().PlayAudio(Resources::AudioKey::Fire);
 
     bFire = true;
     GetAnimationComponent().Start(false, 1.5f, [this]()

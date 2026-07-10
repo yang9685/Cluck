@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[])
 {
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
     SDL_Window* Window = SDL_CreateWindow("Cluck", CLUCK_WINDOW_WIDTH, CLUCK_WINDOW_HEIGHT, 0);
     SDL_Renderer* Renderer = SDL_CreateRenderer(Window, nullptr);

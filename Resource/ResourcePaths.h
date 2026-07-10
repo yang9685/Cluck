@@ -5,13 +5,44 @@ namespace Resources
 {
 namespace Audio
 {
-static constexpr char Bgm[] = "Resource/Audio/bgm.mp3";
+static constexpr char Bgm[] = "Resource/Audio/bgm_converted.wav";
 static constexpr char Explosion[] = "Resource/Audio/explosion.wav";
 static constexpr char Fire1[] = "Resource/Audio/fire_1.wav";
 static constexpr char Fire2[] = "Resource/Audio/fire_2.wav";
 static constexpr char Fire3[] = "Resource/Audio/fire_3.wav";
 static constexpr char Hurt[] = "Resource/Audio/hurt.wav";
 static constexpr char Loss[] = "Resource/Audio/loss.mp3";
+
+static const std::array<const char*, 1> BgmVariants = {
+    Bgm,
+};
+
+static const std::array<const char*, 1> ExplosionVariants = {
+    Explosion,
+};
+
+static const std::array<const char*, 3> FireVariants = {
+    Fire1,
+    Fire2,
+    Fire3,
+};
+
+static const std::array<const char*, 1> HurtVariants = {
+    Hurt,
+};
+
+static const std::array<const char*, 1> LossVariants = {
+    Loss,
+};
+}
+
+namespace AudioKey
+{
+static constexpr char Bgm[] = "bgm";
+static constexpr char Explosion[] = "explosion";
+static constexpr char Fire[] = "fire";
+static constexpr char Hurt[] = "hurt";
+static constexpr char Loss[] = "loss";
 }
 
 namespace Font

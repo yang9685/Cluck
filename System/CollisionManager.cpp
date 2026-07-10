@@ -25,7 +25,9 @@ void CollisionManager::Update()
 
         for (EnemyBase* EnemyInstance : Enemies)
         {
-            if (EnemyInstance == nullptr || HitEnemies.find(EnemyInstance) != HitEnemies.end())
+            if (EnemyInstance == nullptr ||
+                EnemyInstance->IsDying() ||
+                HitEnemies.find(EnemyInstance) != HitEnemies.end())
             {
                 continue;
             }

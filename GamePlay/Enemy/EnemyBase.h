@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../CharacterActor.h"
+#include "../../Component/DeathComponent.h"
 
 class EnemyBase : public CharacterActor
 {
@@ -19,10 +20,15 @@ public:
     void Tick(float DeltaTime) override;
     void Render(SDL_Renderer* Renderer) override;
     void Die();
+    bool IsDying() const;
 
 protected:
     void Move(float DeltaTime);
 
+private:
+    static DeathComponent& CreateDeathComponent(EnemyBase& Owner);
+
 protected:
+    DeathComponent& Death;
     Vector2D Velocity;
 };

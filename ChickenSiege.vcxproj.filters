@@ -21,6 +21,12 @@
     <ClCompile Include="Component\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Component\DeathComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="System\AudioManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GamePlay\BackgroundActor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,6 +72,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Component\Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\DeathComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\AudioManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GamePlay\BackgroundActor.h">

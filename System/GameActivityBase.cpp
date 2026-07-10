@@ -7,6 +7,7 @@
 #include "../GamePlay/Enemy/MediumChickenEnemy.h"
 
 #include "../GamePlay/BackgroundActor.h"
+#include "../Resource/ResourcePaths.h"
 
 GameActivityBase::~GameActivityBase()
 {
@@ -48,6 +49,7 @@ Actor& GameActivityBase::AddActor(std::unique_ptr<Actor> NewActor)
 
 void GameActivityBase::InitializeSingletons()
 {
+    AudioManagerInstance.get().Initialize();
     BulletManagerInstance.get().Initialize(*this);
     PlayerControllerInstance.get().Initialize(*this);
     EnemyManagerInstance.get().Initialize(*this);
@@ -56,6 +58,7 @@ void GameActivityBase::InitializeSingletons()
 void GameActivityBase::UpdateSingletons()
 {
     PlayerControllerInstance.get().Update();
+    AudioManagerInstance.get().Update();
     BulletManagerInstance.get().Update();
     EnemyManagerInstance.get().Update();
     CollisionManagerInstance.get().Update();
@@ -97,6 +100,7 @@ void GameActivityBase::WorldBeginPlay()
 
     CurrentGameStatus = Pending;
     InitializeSingletons();
+    AudioManagerInstance.get().PlayAudio(Resources::AudioKey::Bgm, true);
     for (const std::unique_ptr<Actor>& ActorInstance : Actors)
     {
         if (ActorInstance)
@@ -110,6 +114,7 @@ void GameActivityBase::WorldBeginPlay()
 
 void GameActivityBase::WorldEndPlay()
 {
+    AudioManagerInstance.get().Shutdown();
     BulletManagerInstance.get().Shutdown();
     PlayerControllerInstance.get().Shutdown();
     EnemyManagerInstance.get().Shutdown();

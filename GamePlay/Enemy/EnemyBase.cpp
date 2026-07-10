@@ -19,6 +19,7 @@ EnemyBase::EnemyBase(
         InBaseRenderSize,
         InScale,
         InFrameIntervalSeconds)
+    , Death(CreateDeathComponent(*this))
     , Velocity(InVelocity)
 {
 }
@@ -32,6 +33,12 @@ void EnemyBase::BeginPlay()
 void EnemyBase::Tick(float DeltaTime)
 {
     CharacterActor::Tick(DeltaTime);
+
+    if (Death.IsDying())
+    {
+        return;
+    }
+
     Move(DeltaTime);
 }
 
@@ -47,10 +54,23 @@ void EnemyBase::Render(SDL_Renderer* Renderer)
 
 void EnemyBase::Die()
 {
-    GameActivityBase::GetInstance().DestroyActor(*this);
+    Death.OnDeathBegin();
+}
+
+bool EnemyBase::IsDying() const
+{
+    return Death.IsDying();
 }
 
 void EnemyBase::Move(float DeltaTime)
 {
     SetPosition(GetPosition() + Velocity * DeltaTime);
+}
+
+DeathComponent& EnemyBase::CreateDeathComponent(EnemyBase& Owner)
+{
+    std::unique_ptr<DeathComponent> NewDeathComponent =
+        std::make_unique<DeathComponent>(Owner, Owner.GetAnimationComponent());
+    Component& NewComponent = Owner.AddComponent(std::move(NewDeathComponent));
+    return static_cast<DeathComponent&>(NewComponent);
 }
